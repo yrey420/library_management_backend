@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h3 class="text-center">
+                    <i class="bi bi-box-arrow-in-right"></i> Acceso
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                        </button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <p class="mb-0">¿No tienes cuenta? <a href="{% url 'register' %}" class="text-decoration-none">Regístrate</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

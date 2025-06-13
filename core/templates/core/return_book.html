@@ -1,0 +1,14 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Devolver Libro</h2>
+    <p>¿Devolver <strong>{{ object.book.title }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Devolver</button>
+        <a href="{% url 'my-borrowed-books' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

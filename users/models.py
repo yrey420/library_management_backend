@@ -7,7 +7,7 @@ ADMIN = 'A'
 ROLE_CHOICES = [
     (REGULAR, 'Usuario regular'),
     (ADMIN, 'Administrador'),
-]
+]   
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
