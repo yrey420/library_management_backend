@@ -25,7 +25,7 @@ class BookCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Book
     template_name = 'core/book_form.html'
     fields = ['title', 'author', 'publication_year', 'stock']
-    success_url = reverse_lazy('book-list')
+    success_url = reverse_lazy('core:book_list')
     
     def test_func(self):
         return self.request.user.profile.is_admin()
@@ -39,7 +39,7 @@ class BookUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Book
     template_name = 'core/book_form.html'
     fields = ['title', 'author', 'publication_year', 'stock']
-    success_url = reverse_lazy('book-list')
+    success_url = reverse_lazy('core:book_list')
     
     def test_func(self):
         return self.request.user.profile.is_admin()
@@ -62,7 +62,7 @@ class BorrowBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         
         if book.stock <= 0:
             messages.error(request, 'No hay ejemplares disponibles de este libro.')
-            return redirect('book-detail', pk=book.pk)
+            return redirect('core:book-detail', pk=book.pk)
         
         # Verificar si el usuario ya tiene este libro prestado y no devuelto
         existing_borrow = BorrowRecord.objects.filter(
@@ -73,7 +73,7 @@ class BorrowBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         
         if existing_borrow:
             messages.warning(request, 'Ya tienes este libro prestado.')
-            return redirect('book-detail', pk=book.pk)
+            return redirect('core:book-detail', pk=book.pk)
         
         # Crear el registro de préstamo
         BorrowRecord.objects.create(
@@ -86,7 +86,7 @@ class BorrowBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         book.save()
         
         messages.success(request, f'Has tomado prestado "{book.title}". ¡Disfrútalo!')
-        return redirect('my-borrowed-books')
+        return redirect('core:my-borrowed-books')
 
 class ReturnBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = BorrowRecord
@@ -102,7 +102,7 @@ class ReturnBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         
         if borrow_record.returned:
             messages.warning(request, 'Este libro ya fue devuelto.')
-            return redirect('my-borrowed-books')
+            return redirect('core:my-borrowed-books')
         
         # Marcar como devuelto
         borrow_record.returned = True
@@ -115,7 +115,7 @@ class ReturnBookView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         book.save()
         
         messages.success(request, f'Has devuelto "{book.title}". ¡Gracias!')
-        return redirect('my-borrowed-books')
+        return redirect('core:my-borrowed-books')
 
 class MyBorrowedBooksView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = BorrowRecord

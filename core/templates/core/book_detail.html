@@ -15,11 +15,11 @@
                 <p><strong>Stock:</strong> {{ book.stock }}</p>
                 
                 {% if user.profile.is_admin %}
-                    <a href="{% url 'book-edit' book.pk %}" class="btn btn-warning">
+                    <a href="{% url 'core:book-edit' book.pk %}" class="btn btn-warning">
                         <i class="bi bi-pencil-square"></i> Editar
                     </a>
                 {% elif book.stock > 0 %}
-                    <form method="post" action="{% url 'book-borrow' book.pk %}" class="mt-3">
+                    <form method="post" action="{% url 'core:book-borrow' book.pk %}" class="mt-3">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-cart-plus"></i> Pedir Prestado

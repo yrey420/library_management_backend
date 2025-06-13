@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Variable to store the redirection after login
+LOGIN_REDIRECT_URL = 'profile'
+
 
 # Application definition
 
@@ -41,8 +44,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     
-    'core.apps.CoreConfig',
-    'users.apps.UsersConfig',
+    'core',
+    'users',
 
     'rest_framework',
     'rest_framework.authtoken'

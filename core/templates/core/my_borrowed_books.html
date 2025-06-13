@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         {% if not record.returned %}
-                        <a href="{% url 'book-return' record.pk %}" class="btn btn-danger btn-sm">
+                        <a href="{% url 'core:book-return' record.pk %}" class="btn btn-danger btn-sm">
                             Devolver
                         </a>
                         {% endif %}
