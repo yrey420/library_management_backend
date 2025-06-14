@@ -11,7 +11,6 @@ def register(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Cuenta creada para {username}! Ahora puedes iniciar sesión.')
-            token, created = Token.objects.get_or_create(user=username)
             return redirect('login')
     else:
         form = UserRegisterForm()
