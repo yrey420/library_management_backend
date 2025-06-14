@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 def register(request):
@@ -10,6 +11,7 @@ def register(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Cuenta creada para {username}! Ahora puedes iniciar sesión.')
+            token, created = Token.objects.get_or_create(user=username)
             return redirect('login')
     else:
         form = UserRegisterForm()

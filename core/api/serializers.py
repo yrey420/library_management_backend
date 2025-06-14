@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, BorrowRecord
+from core.models import Book, BorrowRecord
 from users.models import UserProfile
 
 class BookSerializer(serializers.ModelSerializer):
