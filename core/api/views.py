@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from django.utils import timezone
 from core.models import Book, BorrowRecord
 from core.api.serializers import BookSerializer, BorrowRecordSerializer
 from core.permissions import IsAdmin, IsRegularUser
@@ -9,11 +10,15 @@ from core.permissions import IsAdmin, IsRegularUser
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Permiso base para todas las acciones
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'destroy']:
+        if self.action in ['create', 'update', 'destroy', 'borrow']:
+            if self.action == 'borrow':
+                return [IsAuthenticated(), IsRegularUser()]
             return [IsAuthenticated(), IsAdmin()]
-        return []
+        return [IsAuthenticated()]
+
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated, IsRegularUser])
     def borrow(self, request, pk=None):
