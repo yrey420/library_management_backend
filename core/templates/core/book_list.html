@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Libros Disponibles{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4"><i class="bi bi-book"></i> Libros Disponibles</h2>
+        
+        {% if user.profile.is_admin %}
+            <a href="{% url 'core:book-add' %}" class="btn btn-success mb-3">
+                <i class="bi bi-plus-circle"></i> Agregar Libro
+            </a>
+        {% endif %}
+
+        <div class="list-group">
+            {% for book in books %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ book.title }}</h5>
+                        <p class="mb-1"><strong>Autor:</strong> {{ book.author }}</p>
+                        <small class="text-muted">Año: {{ book.publication_year }} | Stock: {{ book.stock }}</small>
+                    </div>
+                    <div>
+                        <a href="{% url 'core:book-detail' book.pk %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-info-circle"></i> Detalles
+                        </a>
+                        {% if not user.profile.is_admin and book.stock > 0 %}
+                            <a href="{% url 'core:book-borrow' book.pk %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-cart-plus"></i> Pedir
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info">No hay libros disponibles.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

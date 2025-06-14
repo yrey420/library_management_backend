@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3>{{ book.title }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Autor:</strong> {{ book.author }}</p>
+                <p><strong>Año:</strong> {{ book.publication_year }}</p>
+                <p><strong>Stock:</strong> {{ book.stock }}</p>
+                
+                {% if user.profile.is_admin %}
+                    <a href="{% url 'core:book-edit' book.pk %}" class="btn btn-warning">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                {% elif book.stock > 0 %}
+                    <form method="post" action="{% url 'core:book-borrow' book.pk %}" class="mt-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-cart-plus"></i> Pedir Prestado
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-warning">No hay ejemplares disponibles.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
